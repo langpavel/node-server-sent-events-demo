@@ -17,6 +17,8 @@ exports.events = function(req, res) {
 
   res.header('Content-Type', 'text/event-stream; charset=UTF-8');
 
+  var eventId = parseInt(req.get('Last-Event-Id') || 0, 16);
+
   res.write('data: Hello Server-Sent Events!\n');
   res.write('data: This is example of multiline message.\n');
   // Two following (line above and next line) newline characters
@@ -25,7 +27,11 @@ exports.events = function(req, res) {
 
   // send message every second
   var handle = setInterval(function() {
-    res.write('data: ' + new Date + '\n');
+    eventId++;
+    var hexEventId = eventId.toString(16);
+    // unique event id
+    res.write('id: ' + hexEventId + '\n');
+    res.write('data: Event 0x' + hexEventId + ': ' + new Date + '\n');
     // Two following (line above and next line) newline characters
     // indicates event message end
     res.write('\n');
