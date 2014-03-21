@@ -8,12 +8,18 @@ function startEventSource(eventSource) {
       '<hr/><i>Open</i><br/>';
   }, false);
 
+  eventSource.addEventListener('welcome', function(messageEvent) {
+    if (console.log) console.log('welcome message', messageEvent);
+
+    document.querySelector('#container').innerHTML +=
+      '<hr/><b>Welcome sent:</b> ' + messageEvent.data + '<br/>';
+  }, false);
+
   eventSource.addEventListener('message', function(messageEvent) {
     if (console.log) console.log('message', messageEvent);
 
     document.querySelector('#container').innerHTML +=
       messageEvent.data + '<br/>';
-
   }, false);
 
   eventSource.addEventListener('error', function(event) {
@@ -21,7 +27,6 @@ function startEventSource(eventSource) {
 
     document.querySelector('#container').innerHTML +=
       '<i>Error: readyState = ' + event.target.readyState + '</i><br/>';
-
   }, false);
 
 }

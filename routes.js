@@ -17,8 +17,15 @@ exports.events = function(req, res) {
 
   res.header('Content-Type', 'text/event-stream; charset=UTF-8');
 
+  // recommended
+  res.header('Cache-Control', 'no-cache');
+
   var eventId = parseInt(req.get('Last-Event-Id') || 0, 16);
 
+  // client should try reconnect after 10 seconds
+  res.write('retry: 10000\n');
+  // send welcome event with some other kind of information
+  res.write('event: welcome\n');
   res.write('data: Hello Server-Sent Events!\n');
   res.write('data: This is example of multiline message.\n');
   // Two following (line above and next line) newline characters
